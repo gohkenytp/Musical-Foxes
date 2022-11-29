@@ -1,6 +1,6 @@
-package mod.schnappdragon.funnyfoxmod.core.mixin;
+package mod.schnappdragon.musicalfoxes.core.mixin;
 
-import mod.schnappdragon.funnyfoxmod.core.tags.FunnyFoxModItemTags;
+import mod.schnappdragon.musicalfoxes.core.tags.MusicalFoxesItemTags;
 import net.minecraft.core.Holder;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntitySelector;
@@ -24,12 +24,12 @@ public abstract class FoxReplaceAmbientSoundMixin {
             method = "playAmbientSound",
             at = @At("HEAD"),
             cancellable = true)
-    private void funnyfoxmod_foxReplaceAmbientSound(CallbackInfo ci) {
+    private void musicalfoxes_foxReplaceAmbientSound(CallbackInfo ci) {
         Fox fox = (Fox) (Object) this;
         ItemStack itemstack = fox.getItemBySlot(EquipmentSlot.MAINHAND);
         SoundEvent soundevent = null;
 
-        if (itemstack.is(FunnyFoxModItemTags.FOX_CAN_PLAY) && itemstack.getItem() instanceof InstrumentItem instrumentItem) {
+        if (itemstack.is(MusicalFoxesItemTags.FOX_CAN_PLAY) && itemstack.getItem() instanceof InstrumentItem instrumentItem) {
             Optional<Holder<Instrument>> optionalInstrumentHolder = instrumentItem.getInstrument(itemstack);
 
             if (optionalInstrumentHolder.isPresent()) {

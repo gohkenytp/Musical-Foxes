@@ -1,8 +1,8 @@
 {
   "required": true,
-  "package": "mod.schnappdragon.funnyfoxmod.core.mixin",
+  "package": "mod.schnappdragon.musicalfoxes.core.mixin",
   "compatibilityLevel": "JAVA_17",
-  "refmap": "funnyfoxmap.refmap.json",
+  "refmap": "musicalfoxes.refmap.json",
   "mixins": [
     "FoxReplaceAmbientSoundMixin",
     "FoxReplaceDeathSoundMixin",

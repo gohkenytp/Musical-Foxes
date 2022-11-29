@@ -1,9 +1,8 @@
-package mod.schnappdragon.funnyfoxmod.core.mixin;
+package mod.schnappdragon.musicalfoxes.core.mixin;
 
-import mod.schnappdragon.funnyfoxmod.core.tags.FunnyFoxModItemTags;
+import mod.schnappdragon.musicalfoxes.core.tags.MusicalFoxesItemTags;
 import net.minecraft.core.Holder;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.animal.Fox;
 import net.minecraft.world.item.Instrument;
@@ -17,15 +16,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.Optional;
 
 @Mixin(Fox.class)
-public abstract class FoxReplaceHurtSoundMixin {
+public abstract class FoxReplaceDeathSoundMixin {
     @Inject(
-            method = "getHurtSound",
+            method = "getDeathSound",
             at = @At("HEAD"),
             cancellable = true)
-    private void funnyfoxmod_foxReplaceAmbientSound(DamageSource p_28548_, CallbackInfoReturnable<SoundEvent> cir) {
+    private void musicalfoxes_foxReplaceAmbientSound(CallbackInfoReturnable<SoundEvent> cir) {
         ItemStack itemstack = ((Fox) (Object) this).getItemBySlot(EquipmentSlot.MAINHAND);
 
-        if (itemstack.is(FunnyFoxModItemTags.FOX_CAN_PLAY) && itemstack.getItem() instanceof InstrumentItem instrumentItem) {
+        if (itemstack.is(MusicalFoxesItemTags.FOX_CAN_PLAY) && itemstack.getItem() instanceof InstrumentItem instrumentItem) {
             Optional<Holder<Instrument>> optionalInstrumentHolder = instrumentItem.getInstrument(itemstack);
 
             optionalInstrumentHolder.ifPresent(instrumentHolder -> cir.setReturnValue(instrumentHolder.get().soundEvent()));
