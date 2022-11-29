@@ -1,0 +1,19 @@
+modLoader="javafml"
+loaderVersion="[40,)"
+license="All rights reserved"
+issueTrackerURL="https://github.com/SnappyDragon18/Funny-Fox-Mod/issues"
+
+[[mods]]
+  modId="funnyfoxmod"
+  version="1.0.0"
+  displayName="Funny Fox Mod"
+  displayURL="https://www.curseforge.com/minecraft/mc-mods/funnyfoxmod"
+  authors="SchnappDragon"
+  description='''Lets foxes play goat horns.'''
+
+  [[dependencies.funnyfoxmod]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.19, 1.20)"
+    ordering="NONE"
+    side="BOTH"
