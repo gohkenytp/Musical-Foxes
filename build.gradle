@@ -20,7 +20,7 @@ mixin {
     config 'musicalfoxes.mixins.json'
 }
 
-version = '1.0.0'
+version = '1.0.1'
 group = 'mod.schnappdragon.musicalfoxes'
 archivesBaseName = 'musicalfoxes'
 
