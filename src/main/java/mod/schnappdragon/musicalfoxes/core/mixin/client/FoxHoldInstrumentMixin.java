@@ -1,7 +1,7 @@
 package mod.schnappdragon.musicalfoxes.core.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import mod.schnappdragon.musicalfoxes.core.tags.MusicalFoxesItemTags;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.layers.FoxHeldItemLayer;
@@ -21,10 +21,10 @@ public class FoxHoldInstrumentMixin {
     private void musicalfoxes_foxHoldInstrument(PoseStack p_117007_, MultiBufferSource p_117008_, int p_117009_, Fox p_117010_, float p_117011_, float p_117012_, float p_117013_, float p_117014_, float p_117015_, float p_117016_, CallbackInfo ci) {
         if (p_117010_.getItemBySlot(EquipmentSlot.MAINHAND).is(MusicalFoxesItemTags.FOX_CAN_PLAY)) {
             if (!p_117010_.isSleeping()) {
-                p_117007_.mulPose(Vector3f.XP.rotationDegrees(90.0F));
-                p_117007_.mulPose(Vector3f.YP.rotationDegrees(90.0F));
+                p_117007_.mulPose(Axis.XP.rotationDegrees(90.0F));
+                p_117007_.mulPose(Axis.YP.rotationDegrees(90.0F));
             } else {
-                p_117007_.mulPose(Vector3f.ZP.rotationDegrees(90.0F));
+                p_117007_.mulPose(Axis.ZP.rotationDegrees(90.0F));
             }
         }
     }

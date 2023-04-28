@@ -30,10 +30,9 @@ public abstract class FoxReplaceAmbientSoundMixin {
         SoundEvent soundevent = null;
 
         if (itemstack.is(MusicalFoxesItemTags.FOX_CAN_PLAY) && itemstack.getItem() instanceof InstrumentItem instrumentItem) {
-            Optional<Holder<Instrument>> optionalInstrumentHolder = instrumentItem.getInstrument(itemstack);
-
+            Optional<? extends Holder<Instrument>> optionalInstrumentHolder = instrumentItem.getInstrument(itemstack);
             if (optionalInstrumentHolder.isPresent()) {
-                soundevent = optionalInstrumentHolder.get().get().soundEvent();
+                soundevent = optionalInstrumentHolder.get().get().soundEvent().get();
             }
         }
 

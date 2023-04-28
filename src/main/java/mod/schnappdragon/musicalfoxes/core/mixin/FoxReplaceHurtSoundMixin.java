@@ -26,9 +26,8 @@ public abstract class FoxReplaceHurtSoundMixin {
         ItemStack itemstack = ((Fox) (Object) this).getItemBySlot(EquipmentSlot.MAINHAND);
 
         if (itemstack.is(MusicalFoxesItemTags.FOX_CAN_PLAY) && itemstack.getItem() instanceof InstrumentItem instrumentItem) {
-            Optional<Holder<Instrument>> optionalInstrumentHolder = instrumentItem.getInstrument(itemstack);
-
-            optionalInstrumentHolder.ifPresent(instrumentHolder -> cir.setReturnValue(instrumentHolder.get().soundEvent()));
+            Optional<? extends Holder<Instrument>> optionalInstrumentHolder = instrumentItem.getInstrument(itemstack);
+            optionalInstrumentHolder.ifPresent(instrumentHolder -> cir.setReturnValue(instrumentHolder.get().soundEvent().get()));
         }
     }
 }
