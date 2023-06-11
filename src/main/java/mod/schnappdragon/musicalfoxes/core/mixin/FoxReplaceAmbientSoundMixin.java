@@ -40,8 +40,8 @@ public abstract class FoxReplaceAmbientSoundMixin {
             if (fox.isSleeping()) {
                 fox.playSound(soundevent, 0.15F, fox.getVoicePitch());
             } else {
-                if (!fox.level.isDay() && fox.getRandom().nextFloat() < 0.1F) {
-                    List<Player> list = fox.level.getEntitiesOfClass(Player.class, fox.getBoundingBox().inflate(16.0D, 16.0D, 16.0D), EntitySelector.NO_SPECTATORS);
+                if (!fox.level().isDay() && fox.getRandom().nextFloat() < 0.1F) {
+                    List<Player> list = fox.level().getEntitiesOfClass(Player.class, fox.getBoundingBox().inflate(16.0D, 16.0D, 16.0D), EntitySelector.NO_SPECTATORS);
                     if (list.isEmpty()) {
                         fox.playSound(soundevent, 2.0F, fox.getVoicePitch());
                     }
