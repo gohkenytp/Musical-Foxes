@@ -26,7 +26,7 @@ public abstract class FoxReplaceDeathSoundMixin {
 
         if (itemstack.is(MusicalFoxesItemTags.FOX_CAN_PLAY) && itemstack.getItem() instanceof InstrumentItem instrumentItem) {
             Optional<? extends Holder<Instrument>> optionalInstrumentHolder = instrumentItem.getInstrument(itemstack);
-            optionalInstrumentHolder.ifPresent(instrumentHolder -> cir.setReturnValue(instrumentHolder.get().soundEvent().get()));
+            optionalInstrumentHolder.ifPresent(instrumentHolder -> cir.setReturnValue(instrumentHolder.value().soundEvent().value()));
         }
     }
 }

@@ -1,117 +1,87 @@
-buildscript {
-    repositories {
-        maven { url = 'https://files.minecraftforge.net/maven' }
-        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
-        jcenter()
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '[6.0,6.2)', changing: true
-        classpath group: "org.spongepowered", name: "mixingradle", version: "0.7-SNAPSHOT"
-    }
-}
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'org.spongepowered.mixin'
-apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
-
-mixin {
-    add sourceSets.main, 'musicalfoxes.refmap.json'
-    config 'musicalfoxes.mixins.json'
+plugins {
+    id 'java-library'
+    id 'eclipse'
+    id 'idea'
+    id 'maven-publish'
+    id 'net.neoforged.gradle.userdev' version '7.0.57'
 }
 
-version = '1.0.3'
-group = 'mod.schnappdragon.musicalfoxes'
-archivesBaseName = 'musicalfoxes'
+version = project.mod_version
+group = project.mod_group_id
+
+repositories {
+    mavenLocal()
+}
+
+base {
+    archivesName = project.mod_id
+}
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
 
-println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
-minecraft {
-    mappings channel: 'official', version: '1.20'
+runs {
+    configureEach {
+        systemProperty 'forge.logging.markers', 'REGISTRIES'
 
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+        systemProperty 'forge.logging.console.level', 'debug'
 
-    runs {
-        client {
-            workingDirectory project.file('run')
-            arg "-mixin.config=musicalfoxes.mixins.json"
+        modSource project.sourceSets.main
+    }
 
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
+    client {
+        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+    }
 
-            mods {
-                musicalfoxes {
-                    source sourceSets.main
-                }
-            }
-        }
+    server {
+        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+        programArgument '--nogui'
+    }
 
-        server {
-            workingDirectory project.file('run')
-            arg "-mixin.config=musicalfoxes.mixins.json"
+    gameTestServer {
+        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+    }
 
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-
-            mods {
-                musicalfoxes {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        data {
-            workingDirectory project.file('run')
-
-            property 'forge.logging.markers', 'REGISTRIES'
-
-            property 'forge.logging.console.level', 'debug'
-
-            args '--mod', 'musicalfoxes', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-
-            mods {
-                musicalfoxes {
-                    source sourceSets.main
-                }
-            }
-        }
+    data {
+        programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
     }
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
+
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.20-46.0.1'
-    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    implementation "net.neoforged:neoforge:${neo_version}"
 }
 
-jar {
-    manifest {
-        attributes([
-            "Specification-Title": "musicalfoxes",
-            "Specification-Vendor": "SchnappDragon",
-            "Specification-Version": "1",
-            "Implementation-Title": project.name,
-            "Implementation-Version": "${version}",
-            "Implementation-Vendor" :"SchnappDragon",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-            "MixinConfigs": "musicalfoxes.mixins.json"
-        ])
+tasks.withType(ProcessResources).configureEach {
+    var replaceProperties = [
+            minecraft_version   : minecraft_version, minecraft_version_range: minecraft_version_range,
+            neo_version         : neo_version, neo_version_range: neo_version_range,
+            loader_version_range: loader_version_range,
+            mod_id              : mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
+            mod_authors         : mod_authors, mod_description: mod_description, pack_format_number: pack_format_number,
+    ]
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand replaceProperties + [project: project]
     }
 }
 
-jar.finalizedBy('reobfJar')
-
 publishing {
     publications {
-        mavenJava(MavenPublication) {
-            artifact jar
+        register('mavenJava', MavenPublication) {
+            from components.java
         }
     }
     repositories {
         maven {
-            url "file:///${project.projectDir}/mcmodsrepo"
+            url "file://${project.projectDir}/repo"
         }
     }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
 }
