@@ -1,7 +1,6 @@
 package mod.schnappdragon.musicalfoxes.core;
 
 import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.common.NeoForge;
 
 @Mod(MusicalFoxes.MODID)
 public class MusicalFoxes {
